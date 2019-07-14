@@ -1,52 +1,49 @@
-import React, { Component } from 'react'
-
+import React, { Component } from "react";
+import { linkData } from "./linkData";
 const ProductContext = React.createContext();
-
-export class ProductProvider extends Component {
-    state = {
-        sidebarOpen:false,
-        cartOpen:false,
-        cartItems:0
-    }
-// handle sidebar
-handleSidebar = () =>{
-    this.setState({
-        sidebarOpen:!this.sidebarOpen
-    })
+//Provider
+//Consumer
+class ProductProvider extends Component {
+  state = {
+    sidebarOpen: false,
+    cartOpen: false,
+    cartItems: 110,
+    links: linkData,
+    cart:[]
+  };
+  // handle sidebar
+  handleSidebar = () => {
+    this.setState({ sidebarOpen: !this.state.sidebarOpen });
+  };
+  // hanldle sart
+  handleCart = () => {
+    this.setState({ cartOpen: !this.state.sidebarOpen });
+  };
+  //close cart
+  closeCart = () => {
+    this.setState({ cartOpen: false });
+  };
+  // open
+  openCart = () => {
+    this.setState({ cartOpen: true });
+  };
+  render() {
+    return (
+    <ProductContext.Provider
+        value={{
+            ...this.state,
+            handleSidebar: this.handleSidebar,
+            handleCart: this.handleCart,
+            closeCart: this.closeCart,
+            openCart: this.openCart
+        }}
+    >
+        {this.props.children}
+    </ProductContext.Provider>
+    );
 }
-// handle sidecart
-handleCart = () =>{
-    this.setState({
-        cartOpen:!this.sidebarOpen
-    })
-}
-// closing cart
-closeCart = () => {
-    this.setState({
-        cartOpen:false
-    })
-}
-//open cart 
-openCart = () =>{
-    this.setState({
-        cartOpen:true
-    })
-}
-    render() {
-        return(
-            <ProductContext.Provider value={{
-                ...this.state,
-                handleSidebar: this.handleSidebar,
-                handleCart:this.handleCart,
-                openCart:this.openCart,
-                closeCart: this.closeCart
-            }}>
-                {this.props.children}
-            </ProductContext.Provider>
-        )
-    }
 }
 
-export const ProductConsumer = ProductContext.Consumer;
+const ProductConsumer = ProductContext.Consumer;
 
-export default { ProductProvider, ProductConsumer };
+export { ProductProvider, ProductConsumer };
